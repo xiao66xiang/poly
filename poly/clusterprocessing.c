@@ -1,7 +1,51 @@
 #include "define.h"
+#include<stdlib.h>
+#include<stdio.h>
+int comp(const void*a, const void*b)//用来做比较的函数。
+{
+	if (point[*(int*)a].x > point[*(int*)b].x) return 1;
+	if (point[*(int*)a].x < point[*(int*)b].x) return -1;
+	if (point[*(int*)a].y > point[*(int*)b].y) return 1;
+	if (point[*(int*)a].y < point[*(int*)b].y) return -1;
+}
 void processing_points(){
-     int i ;
-     memset(point_num , 0, sizeof(point_num)) ;
+	int i,head=0,top=0; 
+	for (i = 0; i < number_of_points; i++)
+		point_num[i] = i;
+	
+	qsort(point_num, number_of_points, sizeof(int), comp);
+	for (i = 0; i < number_of_points; i++)
+		point_cnt[i] = i + 1;
+
+	while (top< number_of_points)
+	{
+		point_id_cluster[top++] = point_num[head];
+		while ((point_cnt[head]< number_of_points) && (point[point_num[head]].y <= point[point_num[point_cnt[head]]].y))
+		{
+			point_id_cluster[top++] = point_num[point_cnt[head]];
+			head = point_cnt[head];
+		}
+		int p = head, q=point_cnt[head],current=point_num[head];
+		head = point_cnt[head];
+		while (q < number_of_points)
+		{
+			if (point[point_num[q]].y <= point[current].y)
+			{
+				point_id_cluster[top++] = point_num[q];
+				current = point_num[q];
+				point_cnt[p] = point_cnt[q];
+			}
+			else p = point_cnt[p];
+			if (p < number_of_points)q = point_cnt[p]; else break;
+		}
+	}
+	freopen("testing.out", "w", stdout);
+	for (i = 0; i < number_of_points; i++) {
+		//		printf("%d\n", point_num[i]);
+		printf("%f %f\n", point[point_id_cluster[i]].x, point[point_id_cluster[i]].y);
+	}
+
+	/*  memset(point_num , 0, sizeof(point_num)) ;
      for (i = 0 ; i < number_of_points ; i++)
          point_num[point_id[i]+1]++ ;
      for (i = 1 ; i < number_of_points ; i++)
@@ -13,7 +57,7 @@ void processing_points(){
          point_id_cluster[point_cnt[point_id[i]]] = i ;
          point_cnt[point_id[i]] ++ ;
      }
-	 /* number_of_processing = -1 ;
+	 number_of_processing = -1 ;
      for (i = 0 ; i < number_of_points - 1 ; i++) if (point_num[i+1] - point_num[i] > 0){
          point_id_first[++number_of_processing] = point_num[i] ;
      }
