@@ -746,12 +746,12 @@ void Solve(argType* argNode)
 		for (i = stP ; i <=enP ; i++)
 		{
 			Ls = 0 ; Rs = 0 ; flagC[ProNum] = 0 ;
-			L = inteval_start[i] , R = inteval_start[i+1] - 1 ;
+			L = interval_start[i] , R = interval_start[i+1] - 1 ;
 			stx = gx(L) ; sty = gy(L) ; edx = gx(R) ; edy = gy(R);
 			if (request_cmd[0] == 'I')
-				Rec_search(ProNum,&RTree[0] , stx ,  sty , edx  , edy , inteval_time[i]) ;
+				Rec_search(ProNum,&RTree[0] , stx ,  sty , edx  , edy , interval_time[i]) ;
 			else
-				Rec_search(ProNum,&_RTree[0] , stx ,  sty , edx  , edy , inteval_time[i]) ;
+				Rec_search(ProNum,&_RTree[0] , stx ,  sty , edx  , edy , interval_time[i]) ;
 			//continue;
 			if (Rnum[ProNum] > 0)
 				{

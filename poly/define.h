@@ -72,9 +72,9 @@ extern int point_cnt[MAX_POINT_NUMBER] ;
 extern int number_of_processing ;
 
 
-extern int inteval_number ;
-extern int inteval_start[MAX_POINT_NUMBER];
-extern int inteval_time[MAX_POINT_NUMBER];
+extern int interval_number ;
+extern int interval_start[MAX_POINT_NUMBER];
+extern int interval_time[MAX_POINT_NUMBER];
 
 extern int ansx[5],ansy[5],flagC[5];
 

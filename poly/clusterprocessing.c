@@ -12,15 +12,16 @@ void processing_points(){
 	int i,head=0,top=0; 
 	for (i = 0; i < number_of_points; i++)
 		point_num[i] = i;
-	
+	interval_number = 0;
 	qsort(point_num, number_of_points, sizeof(int), comp);
 	for (i = 0; i < number_of_points; i++)
 		point_cnt[i] = i + 1;
 
 	while (top< number_of_points)
 	{
+		interval_start[interval_number++] = top;
 		point_id_cluster[top++] = point_num[head];
-		while ((point_cnt[head]< number_of_points) && (point[point_num[head]].y <= point[point_num[point_cnt[head]]].y))
+		while ((point_cnt[head]< number_of_points) && (point[point_num[head]].y < point[point_num[point_cnt[head]]].y))
 		{
 			point_id_cluster[top++] = point_num[point_cnt[head]];
 			head = point_cnt[head];
@@ -29,7 +30,7 @@ void processing_points(){
 		head = point_cnt[head];
 		while (q < number_of_points)
 		{
-			if (point[point_num[q]].y <= point[current].y)
+			if (point[point_num[q]].y > point[current].y)
 			{
 				point_id_cluster[top++] = point_num[q];
 				current = point_num[q];
@@ -39,7 +40,9 @@ void processing_points(){
 			if (p < number_of_points)q = point_cnt[p]; else break;
 		}
 	}
-	freopen("testing.out", "w", stdout);
+	interval_start[interval_number] = number_of_points;
+	printf("%d\n", interval_number);
+		freopen("testing.out", "w", stdout);
 	for (i = 0; i < number_of_points; i++) {
 		//		printf("%d\n", point_num[i]);
 		printf("%f %f\n", point[point_id_cluster[i]].x, point[point_id_cluster[i]].y);
@@ -97,18 +100,18 @@ void parse_id_cluster() {
 	int direction;
 	int time_segment;
 	int flag = 1;
-    inteval_number = 0 ;
+    interval_number = 0 ;
   //  polygon_sequence[1] = 1000000 ;
 	for (i = 0; i < number_of_points; ++i) {
 		//new segment
 		if (point_id[point_id_cluster[i]] > id) {
 			id = point_id[point_id_cluster[i]];
-			inteval_start[inteval_number] = i;
+			interval_start[interval_number] = i;
 			time_segment = 0;
 			while (time_segment < number_of_polygons && polygon_sequence[time_segment]<= point_sequence[point_id_cluster[i]])
 				++time_segment;
-			inteval_time[inteval_number] = point_sequence[point_id_cluster[i]];
-			++inteval_number;
+			interval_time[interval_number] = point_sequence[point_id_cluster[i]];
+			++interval_number;
 			direction = 15;
 			flag = 1;
 		}else {
@@ -122,14 +125,15 @@ void parse_id_cluster() {
 			if (direction == 0 || (!flag)) {
              //  if (!flag){
 			//	if (1){
-				inteval_start[inteval_number] = i;
-				inteval_time[inteval_number] = point_sequence[point_id_cluster[i]];
-				++inteval_number;
+				interval_start[interval_number] = i;
+				interval_time[interval_number] = point_sequence[point_id_cluster[i]];
+				++interval_number;
 				direction = 15;
 				flag = 1;
 			}
 		}
 	}
-	inteval_start[inteval_number] = number_of_points;
+	interval_start[interval_number] = number_of_points;
+	printf("%d\n", interval_number);
 }
 

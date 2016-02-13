@@ -221,7 +221,7 @@ void read_points_threading() {
     for (i = 0; i < 4; i++) {
         for (j = 0; j < number_of_points_th[i]; j++) {
             point_id[number_of_points] = point_id_th[i][j];
-            point_sequence[number_of_points] = point_sequence_th[i][j];
+            point_sequence[number_of_points] = 1;
             point[number_of_points] = point_th[i][j];
             number_of_points++;
         }
@@ -574,7 +574,7 @@ void read_polygons_threading() {
     for (i = 0; i < 4; i++) {
         for (j = 0; j < number_of_polygons_th[i]; j++) {
             polygon_id[number_of_polygons + j] = polygon_id_th[i][j];
-            polygon_sequence[number_of_polygons + j] = polygon_sequence_th[i][j];
+            polygon_sequence[number_of_polygons + j] =0;
             first_exterior_point[number_of_polygons + j] = number_of_exterior_points + first_exterior_point_th[i][j];
             if (first_interior_region_th[i][j] == -1) {
                 first_interior_region[number_of_polygons + j] = -1;

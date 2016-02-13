@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
 	build_edge_R_Tree() ;
     //Clustering
     processing_points() ;
-	parse_id_cluster();
+//	parse_id_cluster();
 	/** Main (to be complete) */
 	initRtree();
 	//fprintf(stderr,"RT:%d\n",ALLRTree);
@@ -108,19 +108,19 @@ int main(int argc, char *argv[]) {
 
     argNode0->ProNum=0;
     argNode0->stP=0;
-    argNode0->enP=inteval_number/4;
+    argNode0->enP=interval_number/4;
 
     argNode1->ProNum=1;
-    argNode1->stP=inteval_number/4+1;
-    argNode1->enP=inteval_number/4*2;
+    argNode1->stP=interval_number/4+1;
+    argNode1->enP=interval_number/4*2;
 
     argNode2->ProNum=2;
-    argNode2->stP=inteval_number/4*2+1;
-    argNode2->enP=inteval_number/4*3;
+    argNode2->stP=interval_number/4*2+1;
+    argNode2->enP=interval_number/4*3;
 
     argNode3->ProNum=3;
-    argNode3->stP=inteval_number/4*3+1;
-    argNode3->enP=inteval_number-1;
+    argNode3->stP=interval_number/4*3+1;
+    argNode3->enP=interval_number-1;
 
     clockEnd=clock();
  //   fprintf(stderr,"%dms\n", clockEnd - clockBegin);

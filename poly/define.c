@@ -70,8 +70,8 @@ int point_cnt[MAX_POINT_NUMBER] ;
 int number_of_processing ;
 
 
-int inteval_number = 0;
-int inteval_start[MAX_POINT_NUMBER];
-int inteval_time[MAX_POINT_NUMBER];
+int interval_number = 0;
+int interval_start[MAX_POINT_NUMBER];
+int interval_time[MAX_POINT_NUMBER];
 
 int ansx[5],ansy[5],flagC[5];
