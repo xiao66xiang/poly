@@ -7,14 +7,21 @@
 #include "Rtree_SZQ.h"
 #include "clusterprocessing.h"
 
-
+struct GeoPoint
+{
+	double lat, lon;
+};
+struct pair
+{
+	int first, second;
+};
 int dcmp(double a , double b){
      if (fabs(a-b) <= eps) return 1 ;
      return 0 ;
 }
 
 int Ls , Rs ;
-
+int gridWidth, gridHeight; double gridSizeDeg;
 /*
 double min(double a , double b){
        if (a < b) return a ;
@@ -325,6 +332,7 @@ void pre_do_MBR(){
 		 totalmaxy = max(totalmaxy , iyMax[i]) ;
 		 totalminy = min(totalminy , iyMin[i]);
      }
+
 }
 
 
@@ -849,4 +857,70 @@ void Solve(argType* argNode)
 	Done[ProNum]=1;
 	//fclose(f1);
 	//fclose(f2);
+}
+
+struct pair getRowCol(struct GeoPoint* pt)
+{
+	//////////////////////////////////////////////////////////////////////////
+	///first row, second col
+	//////////////////////////////////////////////////////////////////////////
+	struct pair t = {((pt->lat - minLat) / gridSizeDeg),((pt->lon - minLon) / gridSizeDeg) };
+//	printf("%f %f\n", pt->lat, pt->lon);
+//	printf("%f %f\n", minLat, gridSizeDeg);
+	return t;
+}
+polygon_edge_process()
+{
+	fclose(stdout);
+	freopen("Testout.txt", "w", stdout);
+	int i, j,k; int **hasPolyline, **polylineNumber;
+	gridWidth = 100;
+	gridHeight = (int)((maxLon - minLon) / (maxLat - minLat) * (double)gridWidth) + 1;
+	gridSizeDeg = (maxLon- minLon) / (double)gridWidth;
+	fprintf(stderr, "%f %f %f %f\n", maxLon, minLon, maxLat, minLat);
+	fprintf(stderr, "%d %d\n", gridWidth, gridHeight);
+	hasPolyline = (int **)malloc(sizeof(int*)*gridHeight);
+	for (i = 0; i < gridHeight; i++)
+	{
+		hasPolyline[i] = (int*)malloc(sizeof(int)*(gridWidth + 1));
+		for (int j = 0; j <= gridWidth; j++)
+			hasPolyline[i][j] = -1;
+	}
+	hasPolyline[0][0] = 0;
+	polylineNumber = (int **)malloc(sizeof(int*)*gridHeight);
+	for (i = 0; i < gridHeight; i++)
+	{
+		polylineNumber[i] = (int*)malloc(sizeof(int)*(gridWidth + 1));
+		for (int j = 0; j <= gridWidth; j++)polylineNumber[i][j] = -1;
+	}
+	for (i = 0; i < number_of_polygons; i++) {
+		for (j = first_exterior_point[i]; j != -1; j = next_exterior_point[j]) {
+			k = next_exterior_point[j];
+			if (k == -1)break;
+			int gridOfx = (exterior_point[k].x - exterior_point[j].x) / gridSizeDeg;
+			int gridOfy = (exterior_point[k].y - exterior_point[j].y) / gridSizeDeg;
+			if (gridOfx < 0)gridOfx *= -1;
+			if (gridOfy < 0)gridOfy *= -1;
+			int grids = max(gridOfx, gridOfy);
+			grids += 2;
+			double tx = exterior_point[j].x, ty = exterior_point[j].y;
+			double kx = (exterior_point[k].x - exterior_point[j].x) / grids;
+			double ky = (exterior_point[k].y - exterior_point[j].y) / grids;
+			fprintf(stderr, "%f %f\n", exterior_point[k].x, exterior_point[j].x);
+			for (int k = 0; k <= grids; k++)
+			{
+				struct GeoPoint tgeopoint = { tx,ty };
+				printf("%f %f\n", tgeopoint.lat, tgeopoint.lon);
+				struct pair tpair = getRowCol(&tgeopoint);
+				printf("%d %d\n", tpair.first, tpair.second);
+				fprintf(stderr, "%d %d\n", tpair.first, tpair.second);
+				hasPolyline[tpair.first][tpair.second] = i; polylineNumber[tpair.first][tpair.second] = j;
+				tx += kx;
+				ty += ky;
+			}
+			struct GeoPoint tgeopoint = { exterior_point[j].x,exterior_point[j].y };
+			struct pair tpair = getRowCol(&tgeopoint);
+			hasPolyline[tpair.first][tpair.second] = i; polylineNumber[tpair.first][tpair.second] = j;
+		}
+	}
 }

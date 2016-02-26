@@ -50,7 +50,8 @@ int twoDivide[MAX_POLYGON_NUMBER][GRID_SLICE][GRID_SLICE];			//0 左边在里面
 void gridPreprocess() {
 	
 	int i,j,it,it2,it3,it1,tot;
-	
+	maxLon = totalmaxy; maxLat = totalmaxx;
+	minLon = totalminy; minLat = totalminx;
 	totalmaxx -= totalminx ; totalmaxx = totalmaxx / 10.0 ;	//分度值
 	totalmaxy -= totalminy ; totalmaxy = totalmaxy / 10.0 ;	//分度值
 	memset(point_distribute , 0 , sizeof(point_distribute));

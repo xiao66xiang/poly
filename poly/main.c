@@ -136,6 +136,8 @@ int main(int argc, char *argv[]) {
     while(Done[2]==0) Sleep(25);
     while(Done[3]==0) Sleep(25);
 	stottimes = stimes[1] + stimes[2] + stimes[3] + stimes[0] ;
+
+	polygon_edge_process();
 //	fprintf(stderr , "InnerRtreeUseTimes: %d\n" , stottimes);
 //	fprintf(stderr , "InnerRtreeUsePercent : %.3lf\n", stottimes / (number_of_points*1.0));
 	
@@ -146,5 +148,6 @@ int main(int argc, char *argv[]) {
 //    fprintf(stderr,"%d\n",ans_count[0]+ans_count[1]+ans_count[2]+ans_count[3]);
     clockEnd=clock();
   //  fprintf(stderr,"%dms\n", clockEnd - clockBegin);
+	system("pause");
     return 0;
 }

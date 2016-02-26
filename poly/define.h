@@ -78,4 +78,7 @@ extern int interval_time[MAX_POINT_NUMBER];
 
 extern int ansx[5],ansy[5],flagC[5];
 
+extern int gridWidth, gridHeight;
+extern double gridSizeDeg,maxLon,maxLat,minLon,minLat;
+
 

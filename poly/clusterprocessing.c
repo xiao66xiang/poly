@@ -42,12 +42,12 @@ void processing_points(){
 	}
 	interval_start[interval_number] = number_of_points;
 	printf("%d\n", interval_number);
-		freopen("testing.out", "w", stdout);
+	freopen("testing.out", "w", stdout);
 	for (i = 0; i < number_of_points; i++) {
 		//		printf("%d\n", point_num[i]);
 		printf("%f %f\n", point[point_id_cluster[i]].x, point[point_id_cluster[i]].y);
 	}
-
+	fclose(stdout);
 	/*  memset(point_num , 0, sizeof(point_num)) ;
      for (i = 0 ; i < number_of_points ; i++)
          point_num[point_id[i]+1]++ ;
