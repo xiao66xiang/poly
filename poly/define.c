@@ -7,7 +7,7 @@ int length;
 char request_cmd[10], requst_dist_cmd[10];
 char point_input_file_path[300], polygon_input_file_path[300], output_file_path[300];
 
-double totalmaxx , totalminx , totalmaxy , totalminy ;
+double totalmaxx , totalminx , totalmaxy , totalminy ,maxLat,maxLon,minLat,minLon;
 int point_distribute[20][20];
 
 int number_of_points;

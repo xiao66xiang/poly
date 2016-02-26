@@ -148,6 +148,6 @@ int main(int argc, char *argv[]) {
 //    fprintf(stderr,"%d\n",ans_count[0]+ans_count[1]+ans_count[2]+ans_count[3]);
     clockEnd=clock();
   //  fprintf(stderr,"%dms\n", clockEnd - clockBegin);
-	system("pause");
+//	system("pause");
     return 0;
 }

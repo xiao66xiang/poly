@@ -867,6 +867,7 @@ struct pair getRowCol(struct GeoPoint* pt)
 	struct pair t = {((pt->lat - minLat) / gridSizeDeg),((pt->lon - minLon) / gridSizeDeg) };
 //	printf("%f %f\n", pt->lat, pt->lon);
 //	printf("%f %f\n", minLat, gridSizeDeg);
+	fprintf(stderr, "%d %d\n", t.first, t.second);
 	return t;
 }
 polygon_edge_process()
@@ -876,22 +877,22 @@ polygon_edge_process()
 	int i, j,k; int **hasPolyline, **polylineNumber;
 	gridWidth = 100;
 	gridHeight = (int)((maxLon - minLon) / (maxLat - minLat) * (double)gridWidth) + 1;
-	gridSizeDeg = (maxLon- minLon) / (double)gridWidth;
+	gridSizeDeg = (maxLat- minLat) / (double)gridWidth;
 	fprintf(stderr, "%f %f %f %f\n", maxLon, minLon, maxLat, minLat);
 	fprintf(stderr, "%d %d\n", gridWidth, gridHeight);
-	hasPolyline = (int **)malloc(sizeof(int*)*gridHeight);
-	for (i = 0; i < gridHeight; i++)
+	hasPolyline = (int **)malloc(sizeof(int*)*(gridWidth+1));
+	for (i = 0; i <= gridWidth; i++)
 	{
-		hasPolyline[i] = (int*)malloc(sizeof(int)*(gridWidth + 1));
-		for (int j = 0; j <= gridWidth; j++)
+		hasPolyline[i] = (int*)malloc(sizeof(int)*(gridHeight + 1));
+		for (int j = 0; j <= gridHeight; j++)
 			hasPolyline[i][j] = -1;
 	}
-	hasPolyline[0][0] = 0;
-	polylineNumber = (int **)malloc(sizeof(int*)*gridHeight);
-	for (i = 0; i < gridHeight; i++)
+//	hasPolyline[94][53] = -1;
+	polylineNumber = (int **)malloc(sizeof(int*)*(gridWidth+1));
+	for (i = 0; i <= gridWidth; i++)
 	{
-		polylineNumber[i] = (int*)malloc(sizeof(int)*(gridWidth + 1));
-		for (int j = 0; j <= gridWidth; j++)polylineNumber[i][j] = -1;
+		polylineNumber[i] = (int*)malloc(sizeof(int)*(gridHeight + 1));
+		for (int j = 0; j <= gridHeight; j++)polylineNumber[i][j] = -1;
 	}
 	for (i = 0; i < number_of_polygons; i++) {
 		for (j = first_exterior_point[i]; j != -1; j = next_exterior_point[j]) {
@@ -906,14 +907,14 @@ polygon_edge_process()
 			double tx = exterior_point[j].x, ty = exterior_point[j].y;
 			double kx = (exterior_point[k].x - exterior_point[j].x) / grids;
 			double ky = (exterior_point[k].y - exterior_point[j].y) / grids;
-			fprintf(stderr, "%f %f\n", exterior_point[k].x, exterior_point[j].x);
+//			fprintf(stderr, "%f %f\n", exterior_point[k].x, exterior_point[j].x);
 			for (int k = 0; k <= grids; k++)
 			{
 				struct GeoPoint tgeopoint = { tx,ty };
 				printf("%f %f\n", tgeopoint.lat, tgeopoint.lon);
 				struct pair tpair = getRowCol(&tgeopoint);
 				printf("%d %d\n", tpair.first, tpair.second);
-				fprintf(stderr, "%d %d\n", tpair.first, tpair.second);
+//				fprintf(stderr, "%d %d\n", tpair.first, tpair.second);
 				hasPolyline[tpair.first][tpair.second] = i; polylineNumber[tpair.first][tpair.second] = j;
 				tx += kx;
 				ty += ky;
