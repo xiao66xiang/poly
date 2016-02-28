@@ -10,10 +10,11 @@ char point_input_file_path[300], polygon_input_file_path[300], output_file_path[
 double totalmaxx , totalminx , totalmaxy , totalminy ,maxLat,maxLon,minLat,minLon;
 int point_distribute[20][20];
 
-int number_of_points;
+int number_of_points,number_of_edges;
 int point_id[MAX_POINT_NUMBER];
 int point_sequence[MAX_POINT_NUMBER];
 Point point[MAX_POINT_NUMBER];
+Edge edge[MAX_EDGE_NUMBER];
 int stimes[6] ;
 int stottimes ; 
 

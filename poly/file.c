@@ -228,6 +228,16 @@ void read_points_threading() {
     }
 }
 
+void read_edges_threading()
+{
+	FILE *fp;
+	fp=fopen("edge.txt", "r");
+	fscanf(fp, "%d", &number_of_edges);
+	for (int i = 0; i < number_of_edges;++i)
+		fscanf(fp, "%d %d %d", &edge[i].id, &edge[i].start, &edge[i].end);
+	fclose(fp);
+
+}
 /** read polygons
 * <Method for visiting polygons>
 * For exterior regions:

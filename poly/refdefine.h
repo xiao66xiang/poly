@@ -4,6 +4,7 @@
 #define swap(x,y) (x)+=(y);(y)=(x)-(y);(x)-=(y);
 
 #define MAX_POINT_NUMBER 1000005
+#define MAX_EDGE_NUMBER 1000005
 #define eps 1e-9
 
 /** polygons */
@@ -24,6 +25,7 @@
 
 /** points */
 typedef struct Point { double x, y; } Point;
+typedef struct Edge {int id,start,end}Edge;
 
 /** Outer R-Tree */
 #define MAXCH 8

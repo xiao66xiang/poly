@@ -8,10 +8,11 @@ extern int length;
 extern char request_cmd[10], requst_dist_cmd[10];
 extern char point_input_file_path[300], polygon_input_file_path[300], output_file_path[300];
 
-extern int number_of_points;
+extern int number_of_points,number_of_edges;
 extern int point_id[MAX_POINT_NUMBER];
 extern int point_sequence[MAX_POINT_NUMBER];
 extern Point point[MAX_POINT_NUMBER];
+extern Edge edge[MAX_EDGE_NUMBER];
 
 extern int number_of_polygons;
 extern int polygon_id[MAX_POLYGON_NUMBER];

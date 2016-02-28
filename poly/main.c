@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
 	read_points_threading(); // read document "points500.txt"(7.4M) 100 times, costs 3.0s
 	/** read polygons */
 	read_polygons_threading(); // read document "polygon10.txt"(253KB) 100 times, costs 0.170s
-
+	read_edges_threading();
     clockEnd = clock();
  //   printf("%dms\n", clockEnd - clockBegin);
 //	fprintf(stderr,"poly:%d\n",number_of_polygons);
