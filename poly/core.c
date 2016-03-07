@@ -861,6 +861,7 @@ void Solve(argType* argNode)
 }
 bool intersectCheck(Point* p1,Point* p2,Point* polyline1,Point*polyline2)
 {
+//	printf("%.6f,%.6f %.6f,%.6f %.6f,%.6f %.6f,%.6f \n", p1->x, p1->y, p2->x, p2->y, polyline1->x, polyline1->y, polyline2->x, polyline2->y);
 	double rate = 1000;
 	double x1 = p1->y;
 	double y1 = p1->x;
@@ -914,8 +915,8 @@ polygon_edge_process()
 {
 	fclose(stdout);
 	freopen("Testout.txt", "w", stdout);
-	int i, j,k; int **hasPolyline, **polylineNumber;
-	gridWidth = 100;
+	int i, j,k,l; int **hasPolyline, **polylineNumber;
+	gridWidth = 1000;
 	gridHeight = (int)((maxLon - minLon) / (maxLat - minLat) * (double)gridWidth) + 1;
 	gridSizeDeg = (maxLat- minLat) / (double)gridWidth;
 	hasPolyline = (int **)malloc(sizeof(int*)*(gridWidth+1));
@@ -933,53 +934,57 @@ polygon_edge_process()
 	}
 	for (i = 0; i < number_of_polygons; i++) {
 		for (j = first_exterior_point[i]; j != -1; j = next_exterior_point[j]) {
-			k = next_exterior_point[j];
-			if (k == -1)break;
-			int gridOfx = (exterior_point[k].x - exterior_point[j].x) / gridSizeDeg;
-			int gridOfy = (exterior_point[k].y - exterior_point[j].y) / gridSizeDeg;
+			l = next_exterior_point[j];
+			if (l == -1)break;
+			int gridOfx = (exterior_point[l].x - exterior_point[j].x) / gridSizeDeg;
+			int gridOfy = (exterior_point[l].y - exterior_point[j].y) / gridSizeDeg;
 			if (gridOfx < 0)gridOfx *= -1;
 			if (gridOfy < 0)gridOfy *= -1;
 			int grids = max(gridOfx, gridOfy);
 			grids += 2;
 			double tx = exterior_point[j].x, ty = exterior_point[j].y;
-			double kx = (exterior_point[k].x - exterior_point[j].x) / grids;
-			double ky = (exterior_point[k].y - exterior_point[j].y) / grids;
-			for (int k = 0; k <= grids; k++)
+			double kx = (exterior_point[l].x - exterior_point[j].x) / grids;
+			double ky = (exterior_point[l].y - exterior_point[j].y) / grids;
+			for ( k = 0; k <= grids; k++)
 			{
 				struct GeoPoint tgeopoint = { tx,ty };
 //				printf("%f %f\n", tgeopoint.lat, tgeopoint.lon);
 				struct pair tpair = getRowCol(&tgeopoint);
 //				printf("%d %d\n", tpair.first, tpair.second);
 //				fprintf(stderr, "%d %d\n", tpair.first, tpair.second);
-				hasPolyline[tpair.first][tpair.second] = j; polylineNumber[tpair.first][tpair.second] = k;
+				hasPolyline[tpair.first][tpair.second] = j; polylineNumber[tpair.first][tpair.second] = l;
 				tx += kx;
 				ty += ky;
 			}
 			struct GeoPoint tgeopoint = { exterior_point[j].x,exterior_point[j].y };
 			struct pair tpair = getRowCol(&tgeopoint);
-			hasPolyline[tpair.first][tpair.second] = j; polylineNumber[tpair.first][tpair.second] = k;
+			hasPolyline[tpair.first][tpair.second] = j; polylineNumber[tpair.first][tpair.second] = l;
 		}
 	}
 
 	for (i = 0; i < number_of_edges; i++)
 	{
-		j = edge[i].start; k = edge[i].end;
-		int gridOfx = (point[k].x - point[j].x) / gridSizeDeg;
-		int gridOfy = (point[k].y - point[j].y) / gridSizeDeg;
+		j = edge[i].start; l = edge[i].end;
+		int gridOfx = (point[l].x - point[j].x) / gridSizeDeg;
+		int gridOfy = (point[l].y - point[j].y) / gridSizeDeg;
 		if (gridOfx < 0)gridOfx *= -1;
 		if (gridOfy < 0)gridOfy *= -1;
 		int grids = max(gridOfx, gridOfy);
 		grids += 2;
 		double tx = point[j].x, ty = point[j].y;
-		double kx = (point[k].x - point[j].x) / grids;
-		double ky = (point[k].y - point[j].y) / grids;
-		for (int k = 0; k <= grids; k++)
+		double kx = (point[l].x - point[j].x) / grids;
+		double ky = (point[l].y - point[j].y) / grids;
+		for ( k = 0; k <= grids; k++)
 		{
 			struct GeoPoint tgeopoint = { tx,ty };
 			struct pair tpair = getRowCol(&tgeopoint);
-			if (hasPolyline[tpair.first][tpair.second] != -1 && intersectCheck(&exterior_point[hasPolyline[tpair.first][tpair.second]], &exterior_point[polylineNumber[tpair.first][tpair.second]], &point[j], &point[k]))
+			if (tpair.first>gridWidth || tpair.second>gridHeight)continue;
+//			if (hasPolyline[tpair.first][tpair.second] != -1)
+//				fprintf(stderr, "%d\n", intersectCheck(&exterior_point[hasPolyline[tpair.first][tpair.second]], &exterior_point[polylineNumber[tpair.first][tpair.second]], &point[j], &point[l]));
+			if (hasPolyline[tpair.first][tpair.second] != -1 && intersectCheck(&exterior_point[hasPolyline[tpair.first][tpair.second]], &exterior_point[polylineNumber[tpair.first][tpair.second]], &point[j], &point[l]))
 			{
 				printf("%d\n", edge[i].id);
+//				fprintf(stderr, "%d\n", edge[i].id);
 				break;
 			}
 			tx += kx;
@@ -989,8 +994,9 @@ polygon_edge_process()
 		{
 			struct GeoPoint tgeopoint = { exterior_point[j].x,exterior_point[j].y };
 			struct pair tpair = getRowCol(&tgeopoint);
-			if (hasPolyline[tpair.first][tpair.second] != -1 && intersectCheck(&exterior_point[hasPolyline[tpair.first][tpair.second]], &exterior_point[polylineNumber[tpair.first][tpair.second]], &point[j], &point[k]))
+			if (tpair.first<=gridWidth&&tpair.second<=gridHeight&&hasPolyline[tpair.first][tpair.second] != -1 && intersectCheck(&exterior_point[hasPolyline[tpair.first][tpair.second]], &exterior_point[polylineNumber[tpair.first][tpair.second]], &point[j], &point[l]))
 				printf("%d\n", edge[i].id);
+//				fprintf(stderr, "%d\n", edge[i].id);
 		}
 	}
 }

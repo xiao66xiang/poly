@@ -25,7 +25,7 @@
 
 /** points */
 typedef struct Point { double x, y; } Point;
-typedef struct Edge {int id,start,end}Edge;
+typedef struct Edge { int id, start, end; }Edge;
 
 /** Outer R-Tree */
 #define MAXCH 8
