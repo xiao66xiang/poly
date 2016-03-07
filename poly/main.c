@@ -138,6 +138,7 @@ int main(int argc, char *argv[]) {
 	stottimes = stimes[1] + stimes[2] + stimes[3] + stimes[0] ;
 
 	polygon_edge_process();
+	compare_polygon_edge_process();
 //	fprintf(stderr , "InnerRtreeUseTimes: %d\n" , stottimes);
 //	fprintf(stderr , "InnerRtreeUsePercent : %.3lf\n", stottimes / (number_of_points*1.0));
 	

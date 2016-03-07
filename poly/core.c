@@ -1000,3 +1000,27 @@ polygon_edge_process()
 		}
 	}
 }
+compare_polygon_edge_process()
+{
+	fclose(stdout);
+	freopen("compareTestout.txt", "w", stdout);
+	int i, j, k, l, m, n; bool change;
+	for (k = 0; k < number_of_edges; k++)
+	{
+		m = edge[k].start; n = edge[k].end;
+		change = false;
+		for (i = 0; i < number_of_polygons; i++) {
+			if (change)break;
+			for (j = first_exterior_point[i]; j != -1; j = next_exterior_point[j]) {
+				l = next_exterior_point[j];
+				if (l == -1 )break;
+				if (intersectCheck(&exterior_point[j], &exterior_point[l], &point[m], &point[n]))
+				{
+					printf("%d\n", edge[k].id);
+					change = true;
+					break;
+				}
+			}
+		}
+	}
+}
